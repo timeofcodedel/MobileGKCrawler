@@ -26,6 +26,7 @@ class BaseCrawler:
         self.login()
         self._web_source = self._chromeDrive.page_source
 
+
     def _positioningPath(self) -> str:
         filePath = os.path.abspath(__file__)
         # print(filePath)
