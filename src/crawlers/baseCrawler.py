@@ -25,9 +25,7 @@ class BaseCrawler:
         # TODO 尝试登录
         self.login()
         self._web_source = self._chromeDrive.page_source
-        1+1+1+1+2
-        3+4+5+6
-        6+4+4
+
 
     def _positioningPath(self) -> str:
         filePath = os.path.abspath(__file__)
