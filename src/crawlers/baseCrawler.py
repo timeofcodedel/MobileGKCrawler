@@ -8,11 +8,27 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 
 class BaseCrawler:
+    """
+    爬虫基础类，用于设置和管理爬虫的基本行为和登录操作。
+    
+    属性:
+    username: 登录所需的用户名。
+    password: 登录所需的密码。
+    _chromeOptions: Chrome浏览器的选项设置。
+    URL: 需要爬取的网站URL。
+    DATA_PATH: 存储数据的路径。
+    _chromeDrive: Chrome浏览器的驱动实例。
+    """
+
     def __init__(self) -> None:
+        """
+        初始化函数，设置Chrome浏览器的选项，创建浏览器驱动实例，并进行防爬设置。
+        """
+        self.username: str = ""
+        self.password: str = ""
         self._chromeOptions = Options()
         self._chromeOptions.add_experimental_option("detach", True)
-        self.URL = "https://www.gaokao.cn/school/search"
-        # self._chromeOptions.add_argument("--headless")
+        self.URL: str = ""
         self.DATA_PATH = self._positioningPath()
         self._chromeDrive = webdriver.Chrome(options=self._chromeOptions)
         self._chromeDrive.execute_cdp_cmd(
@@ -23,24 +39,45 @@ class BaseCrawler:
         )  # 防反爬
 
     def _getWebSource(self) -> None:
-        self._chromeDrive.get("https://www.gaokao.cn/school/search")
-        time.sleep(3)  # 登录时间，后面在扩展
-        # TODO 尝试登录
-        self.login(username="17875328528", password="Dym1561317465")
-        self._web_source = self._chromeDrive.page_source
+        """
+        打开URL并登录网站。
+        
+        注意:
+        此方法中应包含获取网页源代码的逻辑，但此处未实现。
+        """
+        self._chromeDrive.get(self.URL)
+        # time.sleep(15)
+        self.login(self.username, self.password)
 
     def _positioningPath(self) -> str:
+        """
+        定位并返回数据文件的存储路径。
+        
+        返回:
+        存储数据的文件路径。
+        """
         filePath = os.path.abspath(__file__)
-        # print(filePath)
         currentDir = os.path.dirname(filePath)
-        # print(currentDir)
         projectRoot = os.path.dirname(os.path.dirname(currentDir))
-        # print(projectRoot)
         dataFilePath = os.path.join(projectRoot, "data")
-        # print(dataFilePath)
         return dataFilePath
 
     def login(self, username: str, password: str) -> None:
+        """
+        执行登录操作。
+        
+        参数:
+        username: 登录用的用户名。
+        password: 登录用的密码。
+        
+        异常:
+        ValueError: 如果用户名或密码为空，则抛出此异常。
+        
+        注意:
+        此方法中应包含完整的登录逻辑，包括等待元素出现、点击登录按钮、输入用户名和密码等操作。
+        """
+        if username == None or password == None:
+            raise ValueError("用户名或密码不能为空")
         loginButton = WebDriverWait(self._chromeDrive, 5).until(
             EC.element_to_be_clickable(
                 (By.CSS_SELECTOR, ".login-btn-float_loginText__9o_uo")
@@ -81,9 +118,29 @@ class BaseCrawler:
         loginButton.click()
         print("登录成功")
 
-    def crawl(self) -> None: ...
+    def crawl(self) -> None:
+        """
+        爬取数据的抽象方法。
+        
+        注意:
+        此方法应由子类实现具体的爬虫逻辑。
+        """
+        ...
 
-    def dataParse(self, dataStr: str) -> dict: ...
+    def dataParse(self, dataStr: str) -> dict:
+        """
+        解析数据的抽象方法。
+        
+        参数:
+        dataStr: 需要解析的原始数据字符串。
+        
+        返回:
+        解析后的数据字典。
+        
+        注意:
+        此方法应由子类实现具体的解析逻辑。
+        """
+        ...
 
 
 if __name__ == "__main__":
