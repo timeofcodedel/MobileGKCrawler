@@ -1,17 +1,21 @@
-import pandas
-import os
 import time
-
 
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
-from src.crawlers.baseCrawler import BaseCrawler
-from src.export.exporter import Exporter
+from ..exports.exporter import Exporter
+from .baseCrawler import BaseCrawler
 
 
 class MajorCrawler(BaseCrawler):
+    """
+    专门爬取高校信息的爬虫类，继承自BaseCrawler。
+    """
+
     def __init__(self):
         super().__init__()
+        self.URL = "https://www.gaokao.cn/school/search"
+        self.username = "17875328528"
+        self.password = "Dym1561317465"
         self._PAGE_NUMBER = 148
         self._MAJOR_NAME: list = [
             "综合类",
@@ -30,6 +34,11 @@ class MajorCrawler(BaseCrawler):
         ]
 
     def crawl(self) -> None:
+        """
+               主要的爬取函数，负责分页爬取高校信息并进行基础处理。
+        """
+        self._getWebSource()
+        self._chromeDrive.refresh()
         schoolDataList: list[dict] = []
         for pageNum in range(2, self._PAGE_NUMBER + 1):
             pageCssSeletor: str = (
@@ -44,15 +53,22 @@ class MajorCrawler(BaseCrawler):
                 schoolDataList.append(self.dataParse(element.text))
             self._chromeDrive.find_element(By.CSS_SELECTOR, pageCssSeletor).click()
             time.sleep(0.4)
-            self._web_source = self._chromeDrive.page_source
             print(pageNum)
             if pageNum == self._PAGE_NUMBER - 1:
                 break
-        Exporter.export(self._classifySchoolTypes(schoolDataList, mode="p"), mode="p")
+
+    # Exporter.export(data=self._classifySchoolTypes(schoolDataList, mode="p"), majorName=self._MAJOR_NAME, mode="p")
 
     def _classifySchoolTypes(
             self, schoolList: list[dict], mode="a"
     ) -> list[dict] | list:
+        """
+               对爬取的高校信息进行分类。
+
+               :param schoolList: 高校信息列表
+               :param mode: 分类模式，"a"表示合并同类项，"p"表示分组
+               :return: 分类后的高校信息列表或列表的列表
+        """
         _comprehensiveTypeList: list = []
         _scienceAEngineerList: list = []
         _agricultureAForestryList: list = []
@@ -131,6 +147,12 @@ class MajorCrawler(BaseCrawler):
             raise ValueError("请输入正确的模式")
 
     def dataParse(self, dataStr: str) -> dict:
+        """
+               对爬取的高校信息字符串进行解析，转换为字典格式。
+
+               :param dataStr: 高校信息的字符串表示
+               :return: 解析后的高校信息字典
+        """
         dataList = dataStr.split("\n")
         # print(dataList)
         schoolDict: dict = {
@@ -154,5 +176,4 @@ class MajorCrawler(BaseCrawler):
 
 
 if __name__ == "__main__":
-    majorCrawler = MajorCrawler()
-    majorCrawler.crawl()
+    pass
