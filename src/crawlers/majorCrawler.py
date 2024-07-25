@@ -14,8 +14,6 @@ class MajorCrawler(BaseCrawler):
     def __init__(self):
         super().__init__()
         self.URL = "https://www.gaokao.cn/school/search"
-        self.username = "17875328528"
-        self.password = "Dym1561317465"
         self._PAGE_NUMBER = 148
         self._MAJOR_NAME: list = [
             "综合类",
