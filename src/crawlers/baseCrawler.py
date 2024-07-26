@@ -27,8 +27,10 @@ class BaseCrawler:
         self.username = "17875328528"
         self.password = "Dym1561317465"
         self._chromeOptions = Options()
+
         self._chromeOptions.add_experimental_option("detach", True)
         self._chromeOptions.add_argument("--headless")
+
         self.URL: str = ""
         self.DATA_PATH = self._positioningPath()
         self._chromeDrive = webdriver.Chrome(options=self._chromeOptions)
