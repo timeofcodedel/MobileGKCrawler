@@ -104,7 +104,7 @@ class SheetReadout():
 if __name__ == "__main__":
     c = SheetReadout().gainSchoolUrl()
     print(c)
-    # createSchoolSummaryForm()
+    # createSchoolSummaryForm()   # 重新创建表格如果存在会清除内容
     for i in range(c[0]):
         try:
             bc = SchoolDetail()
