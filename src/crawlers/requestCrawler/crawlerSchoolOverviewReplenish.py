@@ -6,7 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl.reader.excel import load_workbook
 
-from src.crawlers.crawlSchoolOverview import SheetReadout
+from ..seleniumCrawler.SchoolOverviewcrawler import SheetReadout
 
 
 def replenish(name, numericalorder):
@@ -35,7 +35,7 @@ def replenish(name, numericalorder):
 def wife(numericalorder, overall):
     workbook = load_workbook('D:/项目学习/git/MobileGKCrawler/data/学校简介.xlsx')
     sheet = workbook.active
-    sheet[f'D{numericalorder}'] = overall
+    sheet[f'D{numericalorder}'] = overall  # type: ignore
     workbook.save('D:/项目学习/git/MobileGKCrawler/data/学校简介.xlsx')
     workbook.close()
 
