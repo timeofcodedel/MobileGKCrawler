@@ -2,7 +2,7 @@ import time
 
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
-from ..exports.exporter import Exporter
+from ...exports.exporter import Exporter
 from .baseCrawler import BaseCrawler
 
 

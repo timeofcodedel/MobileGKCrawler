@@ -4,10 +4,10 @@ from selenium.common import TimeoutException, WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from src.crawlers.baseCrawler import BaseCrawler
+from .baseCrawler import BaseCrawler
 import pandas as pd
 import xlsxwriter
-
+import time
 
 class SchoolDetail(BaseCrawler):
     def __init__(self):
@@ -16,11 +16,11 @@ class SchoolDetail(BaseCrawler):
     def schoolSummaryFormGain(self, i, name, schoolsummary, url):
         lock = FileLock("myfile.lock")
         with lock:
-            workbook = load_workbook('../school_overview/学校简介.xlsx')
+            workbook = load_workbook(r'')
             sheet = workbook.active
-            sheet[f'A{i - 30}'] = name
-            sheet[f'B{i - 30}'] = schoolsummary
-            sheet[f'C{i - 30}'] = url + '/introDetails'
+            sheet[f'A{i - 30}'] = name # type: ignore
+            sheet[f'B{i - 30}'] = schoolsummary # type: ignore
+            sheet[f'C{i - 30}'] = url + '/introDetails' # type: ignore
             workbook.save('学校简介.xlsx')
             workbook.close()
             print(name + 'excel表格录入成功')
@@ -34,7 +34,7 @@ class SchoolDetail(BaseCrawler):
                 self._chromeDrive.refresh()
             except WebDriverException:
                 try:
-                    self._chromeDrive.time.sleep(10)
+                    time.sleep(10)
                     self._chromeDrive.refresh()
                 except:
                     pass
