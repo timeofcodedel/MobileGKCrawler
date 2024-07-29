@@ -51,8 +51,8 @@ class BaseCrawler:
         self._chromeDrive.get(self.URL)
         # time.sleep(15)
         self.login(self.username, self.password)
-
-    def _positioningPath(self) -> str:
+    @staticmethod
+    def _positioningPath() -> str:
         """
         定位并返回数据文件的存储路径。
         
