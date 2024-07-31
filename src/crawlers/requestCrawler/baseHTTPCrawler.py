@@ -1,4 +1,6 @@
 import os
+
+
 class BaseHTTPCrawler(object):
     def __init__(self) -> None:
         self.headers: dict = {
@@ -26,11 +28,39 @@ class BaseHTTPCrawler(object):
             "size": 20,
             "special_id": "1",
             "type": "",
-            "uri": "apidata/api/gk/special/school",
+            "uri": "",
         }
+
         self.URL: str = ""
-    def setJsonDict(self,signsafeStr:str,uri:str):
-        self.jsonForm["signsafe"]=signsafeStr
-        self.jsonForm["uri"]=uri
+
+    @staticmethod
+    def _positioningPath() -> str:
+        """
+        定位并返回数据文件的存储路径。
+
+        返回:
+        存储数据的文件路径。
+        """
+        filePath = os.path.abspath(__file__)
+        #print(filePath)
+        currentDir = os.path.dirname(filePath)
+        #print(currentDir)
+        projectRoot = os.path.dirname(os.path.dirname(os.path.dirname(currentDir)))
+        #print(projectRoot)
+        dataFilePath = os.path.join(projectRoot, "data")
+        return dataFilePath
+
+    def setSignSafe(self, signsafeStr: str):
+        self.jsonForm["signsafe"] = signsafeStr
+    def setSpecialId(self,specialId):
+        self.jsonForm["special_id"] = specialId
+
+    def setArgs(self,specialId:int,pageNumber:int):
+        if specialId is None or pageNumber is None:
+            raise ValueError("参数不能为空")
+        self.jsonForm["special_id"] = specialId
+        self.jsonForm['page']=pageNumber
+
 if __name__ == "__main__":
-    pass
+    print("********")
+    print(BaseHTTPCrawler._positioningPath())
