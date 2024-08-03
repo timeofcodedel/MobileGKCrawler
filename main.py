@@ -2,7 +2,6 @@ import json
 import requests
 import pprint
 from src.signsafeparse.signsafeParser import getSignSafe
-from src.crawlers.requestCrawler.majorDetailCrawler import MajorDetailCrawler
 if __name__ == "__main__":
     # headers: dict = {
     #         "accept": "application/json, text/plain, */*",
@@ -38,5 +37,4 @@ if __name__ == "__main__":
     # response=requests.post(url,headers=headers,data=jsonForm)
     # with open("data.json","w",encoding="utf-8") as f:
     #     json.dump(response.json(),f,ensure_ascii=False,indent=False)
-    crawler=MajorDetailCrawler()
-    crawler.crawl()
+    pass
