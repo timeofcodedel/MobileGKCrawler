@@ -1,3 +1,7 @@
+import pandas as pd
+import xlsxwriter
+import time
+
 from filelock import FileLock
 from openpyxl.reader.excel import load_workbook
 from selenium.common import TimeoutException, WebDriverException
@@ -5,9 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from .baseCrawler import BaseCrawler
-import pandas as pd
-import xlsxwriter
-import time
+
 
 class SchoolDetail(BaseCrawler):
     def __init__(self):
@@ -18,9 +20,9 @@ class SchoolDetail(BaseCrawler):
         with lock:
             workbook = load_workbook(r'')
             sheet = workbook.active
-            sheet[f'A{i - 30}'] = name # type: ignore
-            sheet[f'B{i - 30}'] = schoolsummary # type: ignore
-            sheet[f'C{i - 30}'] = url + '/introDetails' # type: ignore
+            sheet[f'A{i - 30}'] = name  # type: ignore
+            sheet[f'B{i - 30}'] = schoolsummary  # type: ignore
+            sheet[f'C{i - 30}'] = url + '/introDetails'  # type: ignore
             workbook.save('学校简介.xlsx')
             workbook.close()
             print(name + 'excel表格录入成功')
@@ -75,16 +77,13 @@ class SchoolDetail(BaseCrawler):
         self.schoolSummaryFormGain(numerical_order + 1, name, school_overview, self.URL)
         self._chromeDrive.close()
 
-    def professionalOpening(self):
-        pass
-
 
 class SheetReadout():
     def __init__(self):
         pass
 
     def gainSchoolUrl(self):
-        df = pd.read_excel('D:/项目学习/git/MobileGKCrawler/data/学校.xlsx', sheet_name='Sheet1')
+        df = pd.read_excel('./data/学校.xlsx', sheet_name='Sheet1')
         # print(df.columns)
         URl_data = df['获取地址']
         overallSchoolName = df['学校名字']
@@ -92,7 +91,7 @@ class SheetReadout():
         return len(URl_data), URl_data, overallSchoolName
 
     def createSchoolSummaryForm(self):
-        workbook = xlsxwriter.Workbook('../school_overview/学校简介.xlsx')
+        workbook = xlsxwriter.Workbook('./data/学校简介.xlsx')
         worksheet = workbook.add_worksheet()
         worksheet.write('A1', '学校名字')
         worksheet.write('B1', '学校简介')
