@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="Black">
     <option name="sdkName" value="requests" />
   </component>
+=======
+>>>>>>> 92011f437627ce1f2a552778f94b18bfacbf485b
   <component name="ProjectRootManager" version="2" project-jdk-name="school" project-jdk-type="Python SDK" />
 </project>

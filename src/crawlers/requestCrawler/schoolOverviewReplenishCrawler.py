@@ -1,11 +1,8 @@
 import re
-import threading
-from time import sleep
-
 import requests
+
 from bs4 import BeautifulSoup
 from openpyxl.reader.excel import load_workbook
-
 from ..seleniumCrawler.SchoolOverviewcrawler import SheetReadout
 
 
@@ -26,21 +23,22 @@ def replenish(name, numericalorder):
             else:
                 schoolOverall += i
         # print(schoolOverall)
-        wife(numericalorder, schoolOverall)
+        writeSchoolOverview(numericalorder, schoolOverall)
         print(numericalorder, '\t\t', name)
     except:
         print('少了' + name)
 
 
-def wife(numericalorder, overall):
-    workbook = load_workbook('D:/项目学习/git/MobileGKCrawler/data/学校简介.xlsx')
+def writeSchoolOverview(numericalorder, overall):
+    workbook = load_workbook('./data/学校简介.xlsx')
     sheet = workbook.active
     sheet[f'D{numericalorder}'] = overall  # type: ignore
-    workbook.save('D:/项目学习/git/MobileGKCrawler/data/学校简介.xlsx')
+    workbook.save('./data/学校简介.xlsx')
     workbook.close()
 
 
 if __name__ == '__main__':
+
     overallSchool = SheetReadout().gainSchoolUrl()
     number = 2
     for i in overallSchool[2]:
