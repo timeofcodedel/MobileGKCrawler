@@ -4,12 +4,14 @@ import hmac
 import base64
 from urllib.parse import unquote
 
+
 def clean_url(url):
     return re.sub(r'^/|https?:///?', '', url)
-@staticmethod
-def getSignSafe(URL:str):
+
+
+def getSignSafe(URL: str):
     p = "D23ABC@#56"
-    # 示例:URL = "api.zjzw.cn/web/api/?is_single=2&local_province_id=44&page=2&province_id=&request_type=1&size=20&special_id=1&type=&uri=apidata/api/gk/special/school"
+    # 示例:URL = "api.zjzw.cn/web/api/?is_single=2&local_province_id=44&page=1&province_id=&request_type=1&size=20&special_id=1&type=&uri=apidata/api/gk/special/school"
     URL = clean_url(URL)
     t = {"SIGN": p, "str": URL}
 
@@ -26,8 +28,7 @@ def getSignSafe(URL:str):
     md5_hash = hashlib.md5(base64Encoded.encode("utf-8")).hexdigest()
 
     return md5_hash
+
+
 if __name__ == '__main__':
-    pass
-
-
-
+    print(getSignSafe('https://api.zjzw.cn/web/api/?is_single=2&local_province_id=44&page=1&province_id=&request_type=1&size=20&special_id=1&type=&uri=apidata/api/gk/special/school'))
