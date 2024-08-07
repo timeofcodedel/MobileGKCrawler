@@ -59,7 +59,7 @@ def getProxy() -> list | None:
 
 
 def extractIp() -> list|None:
-    whiteListCertification = "https://api2.docip.net/v1/set_whitelist?api_key=D9sGK2KbLTxlebj798ISwm66b08119&whitelist=192.168.30.101"
+    whiteListCertification = "https://api2.docip.net/v1/set_whitelist?api_key=D9sGK2KbLTxlebj798ISwm66b08119&whitelist=192.168.0.107"
     certificationResponse = requests.get(whiteListCertification)
     certificationResponse.close()
     # 主动提取接口
