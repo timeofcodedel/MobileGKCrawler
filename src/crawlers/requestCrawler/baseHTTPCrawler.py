@@ -4,7 +4,7 @@ import threading
 import queue
 
 from functools import wraps
-from .proxyApi import getProxy
+from .proxyApi import extractIp
 
 from ...signsafeparse.signsafeParser import getSignSafe
 
@@ -46,8 +46,6 @@ class BaseHTTPCrawler(object):
         }
         # 初始化代理IP
         self.proxies: dict = {}
-        # 初始化代理IP队列
-        self.proxyIpQueue: queue.Queue = queue.Queue()
         # 默认URL
         self.DEFAULTURL = "https://api.zjzw.cn/web/api/?is_single=2&local_province_id=44&page=1&province_id=&request_type=1&size=20&special_id=1&type=&uri="
 
@@ -206,10 +204,11 @@ class BaseHTTPCrawler(object):
         """
         更新当前使用的代理IP.
         """
-        ip = getProxy()
+        ip = extractIp()
         if ip is None:
             return None
         self.proxies = {"http": f"http://{ip}"}
+        print(f"代理IP更新成功！,当前ip为{ip}")
 
 
 if __name__ == "__main__":
