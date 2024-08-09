@@ -34,7 +34,6 @@ def setupLogger():
     return logger
 
 
-<<<<<<< HEAD
 def getProxy() -> list | None:
     logger = setupLogger()
     ip: str|None = extractIp() # type: ignore
@@ -61,16 +60,15 @@ def getProxy() -> list | None:
 
 def extractIp() -> list|None:
     whiteListCertification = "https://api2.docip.net/v1/set_whitelist?api_key=D9sGK2KbLTxlebj798ISwm66b08119&whitelist=192.168.0.107"
-=======
 def extractIp() -> str|None:
     whiteListCertification = "https://api2.docip.net/v1/set_whitelist?api_key=D9sGK2KbLTxlebj798ISwm66b08119&whitelist=192.168.30.101"
->>>>>>> a49bdda7e540332ac902a19f752cf016ac6a4743
     certificationResponse = requests.get(whiteListCertification)
     certificationResponse.close()
     # 主动提取接口
     activeExtractionResponse = requests.get(
-        "https://api2.docip.net/v1/get_proxy?api_key=D9sGK2KbLTxlebj798ISwm66b08119&time=60&format=json&num=1"
+        "https://api2.docip.net/v1/get_proxy?api_key=D9sGK2KbLTxlebj798ISwm66b08119&time=300&format=json&num=1"
     )
+    print(activeExtractionResponse)
     resultIP = activeExtractionResponse.json()
     if resultIP==[]:
         return None
