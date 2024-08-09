@@ -1,8 +1,5 @@
-import json
-import requests
-import pprint
-from src.crawlers.requestCrawler.universityScoresCrawler import UniversityScoresCrawler
+from src.crawlers.requestCrawler.admissionConstitutionCrawler import AdmissionConstitutionCrawler
 
 if __name__ == "__main__":
-   a=UniversityScoresCrawler()
-   a.crawl()
+    a = AdmissionConstitutionCrawler()
+    a.programInitiation()
