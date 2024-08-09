@@ -6,7 +6,7 @@ import requests
 import time
 from .baseHTTPCrawler import BaseHTTPCrawler
 class UniversityScoresCrawler(BaseHTTPCrawler):
-    def __init__(self) -> None:
+    def     __init__(self) -> None:
         super().__init__()
         self.maxSchoolNumber=2931
         self.DEFAULTURL="https://static-data.gaokao.cn/www/2.0/schoolprovincescore/420/2024/11.json"
