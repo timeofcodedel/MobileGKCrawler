@@ -1,4 +1,10 @@
 
+import json
+import requests
+import pprint
+import asyncio
+from src.crawlers.requestCrawler.scoreLinesCrawler import ScoreLineCrawler
 if __name__ == "__main__":
-    a = enrollment()
-    print(a.ss())
+    c=ScoreLineCrawler()
+    asyncio.run(c.test())
+
