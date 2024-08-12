@@ -40,7 +40,7 @@ def extractIp() -> str|None:
     certificationResponse.close()
     # 主动提取接口
     activeExtractionResponse = requests.get(
-        "https://api2.docip.net/v1/get_proxy?api_key=D9sGK2KbLTxlebj798ISwm66b08119&time=60&format=json&num=1"
+        "https://api2.docip.net/v1/get_proxy?api_key=D9sGK2KbLTxlebj798ISwm66b08119&time=300&format=json&num=1"
     )
     resultIP = activeExtractionResponse.json()
     if resultIP==[]:
