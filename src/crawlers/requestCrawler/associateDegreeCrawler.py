@@ -55,7 +55,7 @@ class AssociateDegreeCrawler(BaseHTTPCrawler):
                 continue
             resultDict = response.json()
             response.close()
-            print(f"正在爬取第{page}页")
+            print(f"正在爬取第{page}页",resultDict)
             self.storageData(resultDict)
             time.sleep(1)
         #self.writeData(self.majorData)
@@ -78,3 +78,15 @@ class AssociateDegreeCrawler(BaseHTTPCrawler):
         tempJson = dataFrom.to_json(orient='records', force_ascii=False)
         with open(BaseHTTPCrawler._positioningPath() + "\\associateDegreeID.json", 'w', encoding='UTF-8') as f:
             f.write(tempJson)
+
+    def admissionConstitutionCrawler(self,number):
+        self.DEFAULTURL = f"https://static-data.gaokao.cn/www/2.0/school/{number}/news/list.json"
+        response = requests.post(
+            self.DEFAULTURL,
+            headers=self.headers,
+            data=self.jsonForm,
+            proxies=self.proxies,
+            timeout=3
+        )
+        print(response.text)
+
