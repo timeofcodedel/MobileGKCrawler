@@ -1,5 +1,10 @@
-from src.crawlers.requestCrawler.admissionConstitutionCrawler import AdmissionConstitutionCrawler
 
+import json
+import requests
+import pprint
+import asyncio
+from src.crawlers.requestCrawler.scoreLinesCrawler import ScoreLineCrawler
 if __name__ == "__main__":
-    a = AdmissionConstitutionCrawler()
-    a.programInitiation()
+    c=ScoreLineCrawler()
+    asyncio.run(c.test())
+

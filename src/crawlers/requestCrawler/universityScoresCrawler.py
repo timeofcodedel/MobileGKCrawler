@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import pandas
 import random
@@ -53,17 +54,28 @@ class UniversityScoresCrawler(BaseHTTPCrawler):
             '65': '新疆',
         }
         self.disciplineCategories:dict=self.loadJson(path=r'C:\Users\15613\Desktop\爬虫\data\dicname2id.json')['data']['type']
-    @BaseHTTPCrawler.proxyUpdate(30)
-    def crawl(self) -> None:
+    @BaseHTTPCrawler.proxyUpdate(300)
+    def crawl(self) -> None:  
         time.sleep(3)
+        #######################
+        #ai续写
+        log_file = 'logs/app.log'
+        # 创建日志目录如果不存在
+        log_dir = os.path.dirname(log_file)
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+
+        # 初始化日志记录器
+        logger = self.setupLogger(log_file)
+        #######################
         idList:list=self.loadJson(path=r'C:\Users\15613\Desktop\爬虫\data\linkage.json')['school']
-        for i in range(self.maxSchoolNumber):
+        for i in range(2500,self.maxSchoolNumber):
             messageDict:dict=self.getSpecialId(idList,i)
             iterUrl=self.iterID(self.DEFAULTURL,messageDict['school_id'])
             print(f"正在爬取{messageDict['name']}学校的院校分数线")
             for regionID in self.regionDict.keys():
                 print(f"正在爬取{self.regionDict[regionID]}地区")
-                time.sleep(random.randint(1,4))
+                time.sleep(random.randint(1,3))
                 iterUrl=self.iterProvince(iterUrl,regionID)
                 # print(iterUrl)
                 try:
@@ -76,6 +88,9 @@ class UniversityScoresCrawler(BaseHTTPCrawler):
                     if response==None:
                         print(f"这个{self.regionDict[regionID]}地区没有院校分数线")
                         continue
+                except requests.ConnectionError:
+                    logger.info(f"这个{self.regionDict[regionID]}地区没有院校分数线")
+                    continue
                 resultDict:dict=response.json() 
                 response.close()
                 self.storageData(resultDict,messageDict['name'],self.regionDict[regionID])
@@ -121,22 +136,48 @@ class UniversityScoresCrawler(BaseHTTPCrawler):
             if val == queryKey:
                 return key
         return None
+    def setupLogger(self, log_file='app.log'):
+    # 创建一个logger
+        logger = logging.getLogger('my_logger')
+        logger.setLevel(logging.DEBUG)
+
+        # 创建一个handler，用于写入日志文件
+        fh = logging.FileHandler(log_file)
+        fh.setLevel(logging.DEBUG)
+
+        # 再创建一个handler，用于输出到控制台
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.DEBUG)
+
+        # 定义handler的输出格式
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fh.setFormatter(formatter)
+        ch.setFormatter(formatter)
+
+        # 给logger添加handler
+        logger.addHandler(fh)
+        logger.addHandler(ch)
+
+        return logger
     def storageData(self,data:dict,schoolName:str,regionName:str)->None:
         categories=len(data['data'])
-        for key ,value in data['data'].items():
-            for i in range(len(value['item'])):
-                tempList=value['item']
-                discipline=self.query(self.disciplineCategories,key)
-                self.dataList.append([
-                    schoolName,
-                    regionName,
-                    discipline,
-                    tempList[i]['year'],
-                    tempList[i]['local_batch_name'],
-                    tempList[i]['zslx_name'],
-                    tempList[i]['min'],
-                    tempList[i]['min_section'],
-                    tempList[i]['proscore'],
-                    tempList[i]['sg_name'],
-                    tempList[i]['sg_info']
-                ])
+        try:
+            for key ,value in data['data'].items():
+                for i in range(len(value['item'])):
+                    tempList=value['item']
+                    discipline=self.query(self.disciplineCategories,key)
+                    self.dataList.append([
+                        schoolName,
+                        regionName,
+                        discipline,
+                        tempList[i]['year'],
+                        tempList[i]['local_batch_name'],
+                        tempList[i]['zslx_name'],
+                        tempList[i]['min'],
+                        tempList[i]['min_section'],
+                        tempList[i]['proscore'],
+                        tempList[i]['sg_name'],
+                        tempList[i]['sg_info']
+                    ])
+        except KeyError:
+            print(f"这个{schoolName}学校没有{regionName}地区分数线")
