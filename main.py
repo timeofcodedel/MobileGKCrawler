@@ -1,10 +1,6 @@
-
-import json
+from datetime import datetime
+from src.crawlers.requestCrawler.enrollmentPlanCrawler import enrollmentPlan
 import requests
-import pprint
-import asyncio
-from src.crawlers.requestCrawler.scoreLinesCrawler import ScoreLineCrawler
-if __name__ == "__main__":
-    c=ScoreLineCrawler()
-    asyncio.run(c.test())
 
+if __name__ == "__main__":
+    pass
