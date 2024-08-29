@@ -58,17 +58,15 @@ def getProxy() -> list | None:
         return extractIp()[0]#type: ignore
 
 
-def extractIp() -> list|None:
-    whiteListCertification = "https://api2.docip.net/v1/set_whitelist?api_key=D9sGK2KbLTxlebj798ISwm66b08119&whitelist=192.168.0.107"
 def extractIp() -> str|None:
-    whiteListCertification = "https://api2.docip.net/v1/set_whitelist?api_key=D9sGK2KbLTxlebj798ISwm66b08119&whitelist=192.168.30.101"
+    whiteListCertification = "https://api2.docip.net/v1/set_whitelist?api_key=D9sGK2KbLTxlebj798ISwm66b08119&whitelist=192.168.0.107"
     certificationResponse = requests.get(whiteListCertification)
     certificationResponse.close()
     # 主动提取接口
     activeExtractionResponse = requests.get(
         "https://api2.docip.net/v1/get_proxy?api_key=D9sGK2KbLTxlebj798ISwm66b08119&time=300&format=json&num=1"
     )
-    print(activeExtractionResponse)
+    # print(activeExtractionResponse)
     resultIP = activeExtractionResponse.json()
     if resultIP==[]:
         return None
